@@ -32,13 +32,13 @@ export const AddCard = ({ onAddCard }) => {
             placeholder="Enter card name"
             value={newCardName}
             onChange={(e) => setNewCardName(e.target.value)}
-            className='bg-transparent outline-none border-transparent rounded-xl pl-2 mt-2 h-10 bg-white border-2 border-sky-500 w-full'
+            className='outline-none rounded-xl pl-2 mt-2 h-9 bg-white border-2  border-indigo-600 w-full'
           />
           
           {/* Button to save the new card */}
           <button
             onClick={handleSaveCard}
-            className='bg-sky-500 mt-3 rounded-xl h-9 p-2 flex items-center'
+            className='bg-indigo-600 text-white font-semibold mt-3 rounded-xl h-9 p-2 flex items-center'
           >
             <p>Save Card</p>
           </button>
@@ -47,10 +47,10 @@ export const AddCard = ({ onAddCard }) => {
         // Button to initiate editing mode
         <button
           onClick={handleAddCard}
-          className=' mt-3 rounded-xl h-9 pl-2 flex items-center w-full'
+          className=' mt-3 h-9 pl-2 flex items-center w-full'
         >
           {/* Plus icon and text for adding a new card */}
-          <p className='flex'><PlusIcon className="h-6 w-6 text-black" /> Add New Card</p>
+          <p className='flex text-indigo-600 font-semibold'><PlusIcon className="h-6 w-6 " /> Add New Card</p>
         </button>
       )}
     </div>

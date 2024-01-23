@@ -10,7 +10,7 @@ export const Card = ({ cardName, onUpdateCardName }) => {
 
   return (
     <>
-      <button onClick={handleButtonClick} className='bg-slate-100 hover:border hover:border-sky-500 mt-3 rounded-xl h-9 pl-2 flex items-center w-full'>
+      <button onClick={handleButtonClick} className='bg-white hover:bg-indigo-100 text-indigo-600 mt-3 rounded-xl h-9 pl-2 flex items-center w-full'>
         <p>{cardName}</p>
       </button>
 

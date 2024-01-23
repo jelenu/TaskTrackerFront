@@ -26,11 +26,11 @@ export const List = ({ listName, onUpdateListName }) => {
 
   return (
     // Container for the list with styling
-    <div className='w-64 bg-indigo-600 rounded-xl p-4 m-3'>
+    <div className='w-64 h-min bg-white rounded-xl p-4 m-3'>
       {/* Input field for the list name */}
       <label>
         <input
-          className="font-bold bg-transparent outline-none rounded-xl pl-2 text-white focus:ng focus:text-black"
+          className="font-bold bg-transparent outline-none rounded-xl pl-2 text-indigo-600 "
           type="text"
           value={listName}
           onChange={handleNameChange}
