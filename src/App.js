@@ -5,7 +5,6 @@ import { Board } from "./components/boards/Board";
 
 function App() {
   
-
   return (
     // Main container with a background color and full height
     <div className=" h-screen bg-gray-200">

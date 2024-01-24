@@ -19,35 +19,34 @@ export const Login = ({ onToggleForm, closePopup }) => {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:8000/login/', {
+      const response = await fetch('http://localhost:8000/auth/jwt/create/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
         console.error('Error en la solicitud:', response.status);
         return;
       }
-
+  
       const data = await response.json();
       console.log('Respuesta del servidor:', data);
+      
 
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-      }
-      if (data['refresh-token']) {
-        localStorage.setItem('refresh-token', data['refresh-token']);
-      }
-
+      localStorage.setItem('token', data.access);
+      localStorage.setItem('refresh-token', data.refresh);
+      
+  
       closePopup();
-
+  
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
     }
   };
+  
 
   return (
     <div>

@@ -4,9 +4,8 @@ import { XMarkIcon } from "@heroicons/react/20/solid";
 export const Register = ({ onToggleForm, closePopup }) => {
   const [formData, setFormData] = useState({
     username: '',
-    email: '',
     password: '',
-    password_confirm: '',
+    email: '',
   });
 
   const handleChange = (e) => {
@@ -19,33 +18,68 @@ export const Register = ({ onToggleForm, closePopup }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     try {
-      const response = await fetch('http://localhost:8000/register/', {
+      // Primera llamada para registrar al usuario
+      const registerResponse = await fetch('http://localhost:8000/auth/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
       });
-
-      if (!response.ok) {
-        console.error('Error en la solicitud:', response.status);
+  
+      if (!registerResponse.ok) {
+        console.error('Error en la solicitud de registro:', registerResponse.status);
         return;
       }
-
-      const data = await response.json();
-      console.log('Respuesta del servidor:', data);
-
-      if (data.token) {
-        localStorage.setItem('token', data.token);
+  
+      const registerData = await registerResponse.json();
+      console.log('Respuesta del servidor (registro):', registerData);
+  
+      // Segunda llamada para obtener el token
+      try {
+        const loginFormData = {
+          email: formData.email,
+          password: formData.password,
+        };
+  
+        const loginResponse = await fetch('http://localhost:8000/auth/jwt/create/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(loginFormData),
+        });
+  
+        if (!loginResponse.ok) {
+          console.error('Error en la solicitud de inicio de sesión:', loginResponse.status);
+          return;
+        }
+  
+        const loginData = await loginResponse.json();
+        console.log('Respuesta del servidor (inicio de sesión):', loginData);
+  
+        // Verificar si ya existe un token en el localStorage
+        const existingToken = localStorage.getItem('token');
+        
+        if (!existingToken || existingToken !== loginData.token) {
+          // Solo guarda el nuevo token si no existe o es diferente al existente
+          localStorage.setItem('token', loginData.token);
+        }
+    
+        const existingRefreshToken = localStorage.getItem('refresh-token');
+        
+        if (!existingRefreshToken || existingRefreshToken !== loginData['refresh-token']) {
+          // Solo guarda el nuevo refresh token si no existe o es diferente al existente
+          localStorage.setItem('refresh-token', loginData['refresh-token']);
+        }
+      } catch (loginError) {
+        console.error('Error al realizar la solicitud de inicio de sesión:', loginError);
       }
-      if (data['refresh-token']) {
-        localStorage.setItem('refresh-token', data['refresh-token']);
-      }
-
+  
       closePopup();
-
+  
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
     }
