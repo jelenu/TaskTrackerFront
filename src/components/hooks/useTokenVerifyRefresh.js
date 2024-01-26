@@ -7,7 +7,6 @@ const useTokenVerifyRefresh = () => {
 
   const verifyToken = async () => {
     try {
-
       const verifyResponse = await fetch('http://localhost:8000/auth/jwt/verify/', {
         method: 'POST',
         headers: {
@@ -15,16 +14,23 @@ const useTokenVerifyRefresh = () => {
         },
         body: JSON.stringify({ token: token }),
       });
+  
       if (verifyResponse.ok) {
         return true;
       } else if (!refreshAttempted) {
         setRefreshAttempted(true);
-        await refreshToken();
+        const refreshSuccess = await refreshToken();
+          if (refreshSuccess) {
+            // Si el refresh tiene éxito, intenta nuevamente la verificación del token
+            return true;
+          }
+        
       }
     } catch (error) {
       console.error('Error al verificar el token:', error);
-    } finally {
     }
+  
+    return false;
   };
 
   const refreshToken = async () => {
@@ -46,10 +52,9 @@ const useTokenVerifyRefresh = () => {
       }
     } catch (error) {
       console.error('Error al actualizar el token:', error);
-    } finally {
     }
   };
-  return { verifyToken };
+  return { verifyToken, refreshToken };
 };
 
 export default useTokenVerifyRefresh;

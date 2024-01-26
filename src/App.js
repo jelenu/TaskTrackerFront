@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./App.css";
 import Header from "./components/Layout/Header";
-import { Board } from "./components/boards/Board";
+import { BoardList } from "./components/boards/BoardList";
 import { useUser } from './components/context/UserContext';
 import useTokenVerifyRefresh from './components/hooks/useTokenVerifyRefresh';
 
@@ -21,6 +21,7 @@ function App() {
       setVerifyTokenCompleted(true);
     };
     checkLoginStatus();
+    // eslint-disable-next-line
   }, []);
 
   if (!verifyTokenCompleted) {
@@ -29,10 +30,10 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-gray-200">
+    <div className="h-screen bg-gray-200 overflow-hidden">
       {/* Header component */}
       <Header />
-      <Board/>
+      <BoardList/>
     </div>
   );
 }

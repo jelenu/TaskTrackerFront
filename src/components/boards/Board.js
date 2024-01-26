@@ -4,7 +4,6 @@ import { List } from "./List";
 import { useState } from "react";
 import useTokenVerifyRefresh from '../hooks/useTokenVerifyRefresh';
 
-
 export const Board = () => {
   // State to manage the lists
   const [lists, setLists] = useState([]);
@@ -29,25 +28,28 @@ export const Board = () => {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-        if (verifyToken()){
-          const token = localStorage.getItem('token');
+        const isAuthenticated = await verifyToken();
+          if (isAuthenticated) {
+            const token = localStorage.getItem('token');
 
-          const response = await fetch('http://localhost:8000/boards/', {
-            method: 'GET',
-            headers: {
-              'Authorization': `JWT ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
+            const response = await fetch('http://localhost:8000/boards/', {
+              method: 'GET',
+              headers: {
+                'Authorization': `JWT ${token}`,
+                'Content-Type': 'application/json',
+              },
+            });
 
-          if (response.ok) {
-            const data = await response.json();
-            setBoards(data);
-            
-          } else {
-            console.error('Error al obtener los boards');
+            if (response.ok) {
+              const data = await response.json();
+              setBoards(data);
+              
+            } else {
+              console.error('Error al obtener los boards');
+            }
+          }else{
+
           }
-        }
         
       } catch (error) {
         console.error('Error de red:', error);
