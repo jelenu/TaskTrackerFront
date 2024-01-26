@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import { useUser } from "../context/UserContext";
 
 export const Register = ({ onToggleForm, closePopup }) => {
+  const { login } = useUser();
+
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
+    username: "",
+    password: "",
+    email: "",
   });
 
   const handleChange = (e) => {
@@ -18,70 +21,74 @@ export const Register = ({ onToggleForm, closePopup }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       // Primera llamada para registrar al usuario
-      const registerResponse = await fetch('http://localhost:8000/auth/users/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-  
+      const registerResponse = await fetch(
+        "http://localhost:8000/auth/users/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
       if (!registerResponse.ok) {
-        console.error('Error en la solicitud de registro:', registerResponse.status);
+        console.error(
+          "Error en la solicitud de registro:",
+          registerResponse.status
+        );
         return;
       }
-  
+
       const registerData = await registerResponse.json();
-      console.log('Respuesta del servidor (registro):', registerData);
-  
+      console.log("Respuesta del servidor (registro):", registerData);
+
       // Segunda llamada para obtener el token
       try {
         const loginFormData = {
           email: formData.email,
           password: formData.password,
         };
-  
-        const loginResponse = await fetch('http://localhost:8000/auth/jwt/create/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(loginFormData),
-        });
-  
+
+        const loginResponse = await fetch(
+          "http://localhost:8000/auth/jwt/create/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginFormData),
+          }
+        );
+
         if (!loginResponse.ok) {
-          console.error('Error en la solicitud de inicio de sesión:', loginResponse.status);
+          console.error(
+            "Error en la solicitud de inicio de sesión:",
+            loginResponse.status
+          );
           return;
         }
-  
+
         const loginData = await loginResponse.json();
-        console.log('Respuesta del servidor (inicio de sesión):', loginData);
-  
-        // Verificar si ya existe un token en el localStorage
-        const existingToken = localStorage.getItem('token');
-        
-        if (!existingToken || existingToken !== loginData.token) {
-          // Solo guarda el nuevo token si no existe o es diferente al existente
-          localStorage.setItem('token', loginData.token);
-        }
-    
-        const existingRefreshToken = localStorage.getItem('refresh-token');
-        
-        if (!existingRefreshToken || existingRefreshToken !== loginData['refresh-token']) {
-          // Solo guarda el nuevo refresh token si no existe o es diferente al existente
-          localStorage.setItem('refresh-token', loginData['refresh-token']);
-        }
+        console.log("Respuesta del servidor (inicio de sesión):", loginData);
+
+        localStorage.setItem("token", loginData.token);
+        localStorage.setItem("refresh-token", loginData["refresh-token"]);
+        login();
+
       } catch (loginError) {
-        console.error('Error al realizar la solicitud de inicio de sesión:', loginError);
+        console.error(
+          "Error al realizar la solicitud de inicio de sesión:",
+          loginError
+        );
       }
-  
+
       closePopup();
-  
     } catch (error) {
-      console.error('Error al realizar la solicitud:', error);
+      console.error("Error al realizar la solicitud:", error);
     }
   };
 
@@ -95,17 +102,20 @@ export const Register = ({ onToggleForm, closePopup }) => {
 
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                    className="mx-auto h-10 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                />
-                </div>
+              <img
+                className="mx-auto h-10 w-auto"
+                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                alt="Your Company"
+              />
+            </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
-                  <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label
+                    htmlFor="username"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Username
                   </label>
                   <div className="mt-2">
@@ -122,7 +132,10 @@ export const Register = ({ onToggleForm, closePopup }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Email address
                   </label>
                   <div className="mt-2">
@@ -140,7 +153,10 @@ export const Register = ({ onToggleForm, closePopup }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Password
                   </label>
                   <div className="mt-2">
@@ -158,7 +174,10 @@ export const Register = ({ onToggleForm, closePopup }) => {
                 </div>
 
                 <div>
-                  <label htmlFor="password_confirm" className="block text-sm font-medium leading-6 text-gray-900">
+                  <label
+                    htmlFor="password_confirm"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
                     Confirm Password
                   </label>
                   <div className="mt-2">
@@ -186,7 +205,7 @@ export const Register = ({ onToggleForm, closePopup }) => {
               </form>
 
               <p className="mt-10 text-center text-sm text-gray-500">
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <button
                   onClick={() => onToggleForm()}
                   className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
