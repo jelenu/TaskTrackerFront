@@ -1,10 +1,13 @@
 import React from 'react';
 import { XMarkIcon } from "@heroicons/react/20/solid";
  
-export const CardInfo = ({ cardName, onUpdateCardName, onClose }) => {
+export const CardInfo = ({ card, onUpdateCardTitle, onUpdateCardDescription, onClose }) => {
 
-  const handleNameChange = (e) => {
-    onUpdateCardName(e.target.value);
+  const handleTitleChange = (e) => {
+    onUpdateCardTitle(e.target.value);
+  };
+  const handleDescriptionChange = (e) => {
+    onUpdateCardDescription(e.target.value);
   };
 
   return (
@@ -15,8 +18,8 @@ export const CardInfo = ({ cardName, onUpdateCardName, onClose }) => {
             <input
               className="font-bold bg-transparent  text-indigo-600 outline-none  rounded-xl pl-2 border-2 border-transparent focus:border-indigo-600  w-full" 
               type="text"
-              value={cardName}
-              onChange={handleNameChange}
+              value={card.title}
+              onChange={handleTitleChange}
             />
           </label>
           <button className="relative top-0 right-0" onClick={onClose}>
@@ -27,12 +30,13 @@ export const CardInfo = ({ cardName, onUpdateCardName, onClose }) => {
           <div className="mb-4 w-4/6 ">
             <p className='mb-2 font-semibold text-indigo-600'>Descripción</p>
             <textarea
-              className="outline-none border-2 border-indigo-600 rounded-xl pl-2 hover:bg-indigo-200   resize-none w-full h-20 mb-10" 
-              placeholder="Escribe tu descripción aquí"
+              className="outline-none border-2 rounded-xl pl-2 text-indigo-600 hover:bg-gray-200   resize-none w-full h-20 mb-10" 
+              value={card.description}
+              onChange={handleDescriptionChange}
             />
             <p className='mb-2 font-semibold text-indigo-600'>Comentarios</p>
             <textarea
-              className="outline-none  border-2 border-indigo-600 rounded-xl pl-2 hover:bg-indigo-200 resize-none w-full h-20 mb-10" 
+              className="outline-none border-2 rounded-xl pl-2 text-indigo-600 hover:bg-gray-200   resize-none w-full h-20 mb-10" 
               placeholder="Provisional"
             />
           </div>

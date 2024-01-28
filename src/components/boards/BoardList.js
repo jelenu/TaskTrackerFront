@@ -14,7 +14,7 @@ export const BoardList = () => {
         if (isLogged) {
           const token = localStorage.getItem("token");
 
-          const response = await fetch("http://localhost:8000/boards/", {
+          const response = await fetch("http://localhost:8000/boards-list/", {
             method: "GET",
             headers: {
               Authorization: `JWT ${token}`,
@@ -49,7 +49,6 @@ export const BoardList = () => {
     fetchBoards();
     // eslint-disable-next-line
   }, []);
-  console.log(boards);
 
   const handleBoardClick = (boardId) => {
     setActiveBoardId(boardId);

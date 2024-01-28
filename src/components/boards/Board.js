@@ -4,7 +4,7 @@ import { List } from "./List";
 import { useState } from "react";
 import useTokenVerifyRefresh from '../hooks/useTokenVerifyRefresh';
 
-export const Board = () => {
+export const Board = ({boardId}) => {
   // State to manage the lists
   const [lists, setLists] = useState([]);
 
@@ -20,8 +20,6 @@ export const Board = () => {
     setLists(updatedLists);
   };
   
-  
-  const [boards, setBoards] = useState([]);
   const { verifyToken } = useTokenVerifyRefresh();
 
 
@@ -32,7 +30,7 @@ export const Board = () => {
           if (isAuthenticated) {
             const token = localStorage.getItem('token');
 
-            const response = await fetch('http://localhost:8000/boards/', {
+            const response = await fetch('http://localhost:8000/boards/'+boardId, {
               method: 'GET',
               headers: {
                 'Authorization': `JWT ${token}`,
@@ -42,8 +40,7 @@ export const Board = () => {
 
             if (response.ok) {
               const data = await response.json();
-              setBoards(data);
-              
+              setLists(data.lists);
             } else {
               console.error('Error al obtener los boards');
             }
@@ -60,25 +57,23 @@ export const Board = () => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(boards);
-
-
   return (
     <>
-      {/* Container for lists and the "AddList" component */}
-      <div className="flex m-5">
-        {/* Mapping through lists and rendering each "List" component */}
-        {lists.map((list, index) => (
-          <List
-            key={index}
-            listName={list.name}
-            onUpdateListName={(newName) => updateListName(index, newName)}
-          />
-        ))}
+    {/* Container for lists and the "AddList" component */}
+    <div className="flex m-5">
+      {/* Checking if lists is not empty before mapping through it */}
+      {lists && lists.length > 0 && lists.map((list, index) => (
+        <List
+          key={index}
+          listName={list.name}
+          listCards={list.cards}
+          onUpdateListName={(newName) => updateListName(index, newName)}
+        />
+      ))}
 
-        {/* "AddList" component to add new lists */}
-        <AddList onAddList={addList} />
-      </div>
-    </>
+      {/* "AddList" component to add new lists */}
+      <AddList onAddList={addList} />
+    </div>
+  </>
   );
 };

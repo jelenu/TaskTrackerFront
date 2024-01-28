@@ -3,19 +3,26 @@ import { Card } from './Card';
 import { AddCard } from './AddCard';
 
 // List component represents a list with cards
-export const List = ({ listName, onUpdateListName }) => {
+export const List = ({ listName, onUpdateListName, listCards }) => {
   // State to manage the cards in the list
-  const [cards, setCards] = useState([]);
-
+  const [cards, setCards] = useState(listCards ?? []);
+  console.log(cards)
   // Function to add a new card to the list
-  const addCard = (newCardName) => {
-    setCards([...cards, { name: newCardName }]);
+  const addCard = (newCardTitle) => {
+    setCards([...cards, { title: newCardTitle }]);
   };
 
-  // Function to update the name of a card in the list
-  const updateCardName = (index, newName) => {
+  // Function to update the title of a card in the list
+  const updateCardTitle = (index, newTitle) => {
     const updatedCards = [...cards];
-    updatedCards[index].name = newName;
+    updatedCards[index].title = newTitle;
+    setCards(updatedCards);
+  };
+
+  // Function to update the description of a card in the list
+  const updateCardDescription = (index, newDescription) => {
+    const updatedCards = [...cards];
+    updatedCards[index].description = newDescription;
     setCards(updatedCards);
   };
 
@@ -39,7 +46,10 @@ export const List = ({ listName, onUpdateListName }) => {
       
       {/* Mapping through cards and rendering each "Card" component */}
       {cards.map((card, index) => (
-        <Card key={index} cardName={card.name} onUpdateCardName={(newName) => updateCardName(index, newName)} />
+        <Card key={index} 
+              card={card} 
+              onUpdateCardTitle={(newTitle) => updateCardTitle(index, newTitle)} 
+              onUpdateCardDescription={(newDescription) => updateCardDescription(index, newDescription)} />
       ))}
       
       {/* "AddCard" component for adding new cards to the list */}

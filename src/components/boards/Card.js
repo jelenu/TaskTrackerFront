@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import {CardInfo} from './CardInfo';
 
-export const Card = ({ cardName, onUpdateCardName }) => {
+export const Card = ({ card, onUpdateCardTitle, onUpdateCardDescription }) => {
   const [showPopup, setShowPopup] = useState(false);
-
   const handleButtonClick = () => {
     setShowPopup(!showPopup);
   };
-
   return (
     <>
       <button onClick={handleButtonClick} className='bg-white hover:bg-indigo-100 text-indigo-600 mt-3 rounded-xl h-9 pl-2 flex items-center w-full'>
-        <p>{cardName}</p>
+        <p>{card.title}</p>
       </button>
 
       {showPopup && (
-        <CardInfo cardName={cardName} onUpdateCardName={onUpdateCardName} onClose={handleButtonClick} />
+        <CardInfo card={card} onUpdateCardTitle={onUpdateCardTitle} onUpdateCardDescription={onUpdateCardDescription} onClose={handleButtonClick} />
       )}
     </>
   );
