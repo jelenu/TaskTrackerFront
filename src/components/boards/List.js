@@ -6,7 +6,6 @@ import { AddCard } from './AddCard';
 export const List = ({ listName, onUpdateListName, listCards }) => {
   // State to manage the cards in the list
   const [cards, setCards] = useState(listCards ?? []);
-  console.log(cards)
   // Function to add a new card to the list
   const addCard = (newCardTitle) => {
     setCards([...cards, { title: newCardTitle }]);

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useTokenVerifyRefresh = () => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [refresh] = useState(localStorage.getItem('refresh-token') || null);
+  const [refresh, setRefresh] = useState(localStorage.getItem('refresh-token') || null);
   const [refreshAttempted, setRefreshAttempted] = useState(false);
 
   const verifyToken = async () => {
@@ -23,6 +23,12 @@ const useTokenVerifyRefresh = () => {
           if (refreshSuccess) {
             // Si el refresh tiene éxito, intenta nuevamente la verificación del token
             return true;
+          }else {
+            // Si el refresh no tiene éxito, elimina los tokens
+            setToken(null);
+            setRefresh(null);
+            localStorage.removeItem('token');
+            localStorage.removeItem('refresh-token');
           }
         
       }

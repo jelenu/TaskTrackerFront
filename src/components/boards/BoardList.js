@@ -9,7 +9,7 @@ export const BoardList = () => {
   const [activeBoardId, setActiveBoardId] = useState(null);
 
   useEffect(() => {
-    const fetchBoards = async () => {
+    const fetchBoardsList = async () => {
       try {
         if (isLogged) {
           const token = localStorage.getItem("token");
@@ -29,7 +29,7 @@ export const BoardList = () => {
             if (response.status === 401) {
               const tokenRefreshed = await verifyToken();
               if (tokenRefreshed) {
-                return fetchBoards();
+                return fetchBoardsList();
               }
             }
             console.error("Error al obtener los boards");
@@ -46,9 +46,10 @@ export const BoardList = () => {
       }
     };
 
-    fetchBoards();
+    fetchBoardsList();
     // eslint-disable-next-line
   }, []);
+  console.log(boards)
 
   const handleBoardClick = (boardId) => {
     setActiveBoardId(boardId);
