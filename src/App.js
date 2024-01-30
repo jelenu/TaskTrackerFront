@@ -4,6 +4,7 @@ import Header from "./components/Layout/Header";
 import { BoardList } from "./components/boards/BoardList";
 import { useUser } from './components/context/UserContext';
 import useTokenVerifyRefresh from './components/hooks/useTokenVerifyRefresh';
+import { UpdateProvider } from './components/context/UpdateContext';
 
 function App() {
   const { verifyToken } = useTokenVerifyRefresh();
@@ -31,9 +32,13 @@ function App() {
 
   return (
     <div className="h-screen bg-gray-200 overflow-hidden">
-      {/* Header component */}
       <Header />
-      <BoardList/>
+
+      <UpdateProvider>
+        <BoardList/>
+      </UpdateProvider>
+
+      
     </div>
   );
 }

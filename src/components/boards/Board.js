@@ -28,7 +28,7 @@ export const Board = ({boardId}) => {
   useEffect(() => {
     const fetchBoards = async () => {
       try {
-          if (isLogged) {
+          if (isLogged && boardId) {
             const token = localStorage.getItem('token');
 
             const response = await fetch('http://localhost:8000/boards/'+boardId, {

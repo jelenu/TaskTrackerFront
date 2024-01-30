@@ -2,11 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useUser } from "../context/UserContext";
 import useTokenVerifyRefresh from "../hooks/useTokenVerifyRefresh";
 import { Board } from "./Board";
+import { useUpdate } from "../context/UpdateContext";
+import { AddBoard } from "./AddBoard";
+
 export const BoardList = () => {
   const { verifyToken } = useTokenVerifyRefresh();
   const { isLogged } = useUser();
   const [boards, setBoards] = useState([]);
   const [activeBoardId, setActiveBoardId] = useState(null);
+  const { addUpdate } = useUpdate();
+
+  const addBoard = (newBoardName) => {
+    setBoards([...boards, { name: newBoardName }]);
+  };
 
   useEffect(() => {
     const fetchBoardsList = async () => {
@@ -63,9 +71,9 @@ export const BoardList = () => {
             Your Boards
           </h2>
           <div className="flex flex-col p-4">
-            {boards.map((board) => (
+            {boards.map((board, index) => (
               <button
-                key={board.id}
+                key={index}
                 className={`bg-white text-indigo-600 hover:bg-gray-200 font-bold mb-4 rounded p-4 ${
                   activeBoardId === board.id ? "bg-gray-300 hover:bg-gray-300" : ""
                 }`}
@@ -75,7 +83,9 @@ export const BoardList = () => {
               </button>
             ))}
           </div>
+          <AddBoard onAddBoard={addBoard}/>
         </div>
+
       </aside>
       {activeBoardId !== null && <Board boardId={activeBoardId} />}
     </div>
