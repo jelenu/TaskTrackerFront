@@ -42,7 +42,6 @@ export const Login = ({ onToggleForm, closePopup }) => {
       localStorage.setItem('token', data.access);
       localStorage.setItem('refresh-token', data.refresh);
       login();
-      console.log("1")
   
       closePopup();
   

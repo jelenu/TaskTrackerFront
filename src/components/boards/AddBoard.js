@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import { PlusIcon } from "@heroicons/react/20/solid";
-import { useUpdate } from '../context/UpdateContext';
 
 export const AddBoard = ({ onAddBoard }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [newBoardName, setNewBoardName] = useState('');
-    const { addUpdate } = useUpdate();
 
     const handleAddBoard = () => {
       setIsEditing(true);
@@ -14,17 +12,10 @@ export const AddBoard = ({ onAddBoard }) => {
     const handleSaveBoard = () => {
       if (newBoardName.trim() !== '') {
         onAddBoard(newBoardName);
-        setNewBoardName('');
-        
-        addUpdate('Board', { name: newBoardName, create: true });
-        
+        setNewBoardName(''); 
         setIsEditing(false);
       }
     };
-    
-
-    
-
 
 
     return (

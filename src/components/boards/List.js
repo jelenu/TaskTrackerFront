@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from './Card';
 import { AddCard } from './AddCard';
+import { useUpdate } from '../context/UpdateContext';
+
 
 // List component represents a list with cards
-export const List = ({ listName, onUpdateListName, listCards }) => {
+export const List = ({ list, onUpdateListName, fetchBoards }) => {
   // State to manage the cards in the list
-  const [cards, setCards] = useState(listCards ?? []);
+  const [cards, setCards] = useState(list.cards ?? []);
+  const { addUpdate, handleUpdate } = useUpdate();
+
+  console.log(cards)
   // Function to add a new card to the list
-  const addCard = (newCardTitle) => {
-    setCards([...cards, { title: newCardTitle }]);
+  const addCard = async (newCardTitle) => {
+    addUpdate('Card', { title: newCardTitle, order: 0, list_id: list.id, create: true });
+    await handleUpdate();
+    await new Promise(resolve => setTimeout(resolve, 50));
+    await fetchBoards();
   };
+
+  useEffect(() => {
+    // Update local state 'cards' when 'list' prop changes
+    setCards(list.cards ?? []);
+  }, [list.cards]);
+  
+  
 
   // Function to update the title of a card in the list
   const updateCardTitle = (index, newTitle) => {
@@ -38,7 +53,7 @@ export const List = ({ listName, onUpdateListName, listCards }) => {
         <input
           className="font-bold bg-transparent outline-none rounded-xl pl-2 text-indigo-600 "
           type="text"
-          value={listName}
+          value={list.name}
           onChange={handleNameChange}
         />
       </label>

@@ -69,7 +69,7 @@ export const UpdateProvider = ({ children }) => {
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [isLogged, updateData, hasChanges]);
+  }, [isLogged, updateData, hasChanges, verifyToken]);
 
   // Debounce con useEffect
   useEffect(() => {
@@ -77,7 +77,7 @@ export const UpdateProvider = ({ children }) => {
   }, [hasChanges, handleUpdate]);
 
   return (
-    <UpdateContext.Provider value={{ updateData, addUpdate }}>
+    <UpdateContext.Provider value={{ addUpdate, handleUpdate }}>
       {children}
     </UpdateContext.Provider>
   );
