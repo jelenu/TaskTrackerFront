@@ -21,6 +21,8 @@ export const Board = ({board, onUpdateBoardName}) => {
     const updatedList = lists.map((list) =>
       list.id === listId ? { ...list, name: newName } : list);
     setLists(updatedList);
+    addUpdate('List', {id: listId, name: newName});
+
   };
   
   const { verifyToken } = useTokenVerifyRefresh();

@@ -34,6 +34,8 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
     const updatedCards = cards.map((card) =>
       card.id === cardId ? { ...card, title: newTitle } : card);
     setCards(updatedCards);
+    addUpdate('Card', { id:cardId, title: newTitle });
+
   };
 
   // Function to update the description of a card in the list
@@ -41,6 +43,8 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
     const updatedCards = cards.map((card) =>
       card.id === cardId ? { ...card, description: newDescription } : card);
     setCards(updatedCards);
+    addUpdate('Card', { id:cardId, description: newDescription });
+
   };
 
   // Handler for updating the name of the list
