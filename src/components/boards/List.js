@@ -10,15 +10,18 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
   const [cards, setCards] = useState(list.cards ?? []);
   const { addUpdate, handleUpdate } = useUpdate();
 
-  console.log(cards)
   // Function to add a new card to the list
   const addCard = async (newCardTitle) => {
+    try{
     addUpdate('Card', { title: newCardTitle, order: 0, list_id: list.id, create: true });
     await handleUpdate();
     await new Promise(resolve => setTimeout(resolve, 50));
     await fetchBoards();
-  };
 
+    }catch(error){
+      console.error("Error adding board:", error);
+    }
+  };
   useEffect(() => {
     // Update local state 'cards' when 'list' prop changes
     setCards(list.cards ?? []);
@@ -27,16 +30,16 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
   
 
   // Function to update the title of a card in the list
-  const updateCardTitle = (index, newTitle) => {
-    const updatedCards = [...cards];
-    updatedCards[index].title = newTitle;
+  const updateCardTitle = (cardId, newTitle) => {
+    const updatedCards = cards.map((card) =>
+      card.id === cardId ? { ...card, title: newTitle } : card);
     setCards(updatedCards);
   };
 
   // Function to update the description of a card in the list
-  const updateCardDescription = (index, newDescription) => {
-    const updatedCards = [...cards];
-    updatedCards[index].description = newDescription;
+  const updateCardDescription = (cardId, newDescription) => {
+    const updatedCards = cards.map((card) =>
+      card.id === cardId ? { ...card, description: newDescription } : card);
     setCards(updatedCards);
   };
 
@@ -62,8 +65,8 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
       {cards.map((card, index) => (
         <Card key={index} 
               card={card} 
-              onUpdateCardTitle={(newTitle) => updateCardTitle(index, newTitle)} 
-              onUpdateCardDescription={(newDescription) => updateCardDescription(index, newDescription)} />
+              onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
+              onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)} />
       ))}
       
       {/* "AddCard" component for adding new cards to the list */}

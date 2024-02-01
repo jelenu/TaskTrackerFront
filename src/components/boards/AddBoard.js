@@ -12,7 +12,8 @@ export const AddBoard = ({ onAddBoard }) => {
     const handleSaveBoard = () => {
       if (newBoardName.trim() !== '') {
         onAddBoard(newBoardName);
-        setNewBoardName(''); 
+        setNewBoardName('');
+ 
         setIsEditing(false);
       }
     };
@@ -21,7 +22,7 @@ export const AddBoard = ({ onAddBoard }) => {
     return (
       <div className='flex items-center justify-center'>
         {isEditing ? (
-          <div className='bg-white rounded-xl p-4 m-3'>
+          <div className='bg-white rounded-xl p-4'>
             <input
               type="text"
               placeholder="Enter Board name"

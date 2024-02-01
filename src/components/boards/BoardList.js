@@ -69,19 +69,27 @@ export const BoardList = () => {
     }
   };
 
+  const updateBoardName = (boardId, newName) => {
+    const updatedBoard = boards.map((board) =>
+      board.id === boardId ? { ...board, name: newName } : board);
+    setBoards(updatedBoard)
+    addUpdate('Board', {id: boardId, name: newName });
+
+  };
+
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <aside className="w-64">
         <div className="bg-indigo-600 h-screen ">
           <h2 className="text-xl font-bold p-4 text-white text-center">
             Your Boards
           </h2>
-          <div className="flex flex-col p-4">
+          <div className="flex flex-col px-4">
             {boards.map((board) => (
               <button
                 key={board.id}
-                className={`bg-white text-indigo-600 hover:bg-gray-200 font-bold mb-4 rounded p-4 ${
-                  activeBoardId === board.id ? "bg-gray-300 hover:bg-gray-300" : ""
+                className={`text-indigo-600 hover:bg-gray-200 font-bold mb-4 rounded p-4 ${
+                  activeBoardId === board.id ? "bg-gray-400 font-extrabold hover:bg-gray-400" : "bg-white"
                 }`}
                 onClick={() => handleBoardClick(board.id)}
               >
@@ -92,7 +100,11 @@ export const BoardList = () => {
           <AddBoard onAddBoard={addBoard}/>
         </div>
       </aside>
-      {activeBoardId !== null && <Board boardId={activeBoardId} />}
+      {activeBoardId !== null && 
+        <Board key={activeBoardId} 
+          board={boards.find(board => board.id === activeBoardId)} 
+          onUpdateBoardName={(newName) => updateBoardName(activeBoardId, newName)}
+        />}
     </div>
   );
 };

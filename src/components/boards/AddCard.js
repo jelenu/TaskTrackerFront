@@ -47,7 +47,7 @@ export const AddCard = ({ onAddCard }) => {
         // Button to initiate editing mode
         <button
           onClick={handleAddCard}
-          className=' mt-3 h-9 pl-2 flex items-center w-full'
+          className=' mt-3 h-9 pl-2 flex items-center w-full hover:bg-gray-200 rounded-xl'
         >
           {/* Plus icon and text for adding a new card */}
           <p className='flex text-indigo-600 font-semibold'><PlusIcon className="h-6 w-6 " /> Add New Card</p>

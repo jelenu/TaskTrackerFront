@@ -12,7 +12,7 @@ export const UpdateProvider = ({ children }) => {
   });
 
   const [hasChanges, setHasChanges] = useState(false);
-  const [timer, setTimer] = useState(null);
+
 
   const addUpdate = (type, data) => {
     setUpdateData(prevData => ({
@@ -20,14 +20,6 @@ export const UpdateProvider = ({ children }) => {
       [type]: [...prevData[type], data],
     }));
     setHasChanges(true);
-
-    // Reiniciar el temporizador
-    if (timer) {
-      clearTimeout(timer);
-    }
-    setTimer(setTimeout(() => {
-      setHasChanges(false);
-    }, 2000));
   };
 
   const { verifyToken } = useTokenVerifyRefresh();
@@ -35,7 +27,7 @@ export const UpdateProvider = ({ children }) => {
 
   const handleUpdate = useCallback(async () => {
     try {
-      if (isLogged && hasChanges) {
+      if (isLogged) {
         const token = localStorage.getItem('token');
 
         const response = await fetch('http://localhost:8000/update/', {
@@ -69,12 +61,17 @@ export const UpdateProvider = ({ children }) => {
     } catch (error) {
       console.error('Error:', error);
     }
-  }, [isLogged, updateData, hasChanges, verifyToken]);
+  }, [isLogged, updateData, verifyToken]);
 
-  // Debounce con useEffect
   useEffect(() => {
-    handleUpdate();
-  }, [hasChanges, handleUpdate]);
+    if(hasChanges){
+      const handler = setTimeout(() => {handleUpdate();
+      }, 1000);
+      return() =>  {
+        clearTimeout(handler);
+      }
+    } 
+  }, [hasChanges, updateData, handleUpdate]);
 
   return (
     <UpdateContext.Provider value={{ addUpdate, handleUpdate }}>
