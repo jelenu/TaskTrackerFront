@@ -5,6 +5,7 @@ import { Board } from "./Board";
 import { AddBoard } from "./AddBoard";
 import { useUpdate } from '../context/UpdateContext';
 
+
 export const BoardList = () => {
   const { verifyToken } = useTokenVerifyRefresh();
   const { isLogged } = useUser();

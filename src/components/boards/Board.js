@@ -75,6 +75,7 @@ export const Board = ({board, onUpdateBoardName}) => {
       console.error("Error adding board:", error);
     }
   };
+  console.log(lists)
   const handleNameChange = (e) => {
     onUpdateBoardName(e.target.value);
   };
