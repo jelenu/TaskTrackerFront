@@ -10,7 +10,7 @@ export const BoardList = () => {
   const { isLogged } = useUser();
   const [boards, setBoards] = useState([]);
   const [activeBoardId, setActiveBoardId] = useState(null);
-  const { addUpdate, handleUpdate } = useUpdate();
+  const { addUpdate, setIsCreate } = useUpdate();
 
   const fetchBoardsList = async () => {
     try {
@@ -61,7 +61,7 @@ export const BoardList = () => {
   const addBoard = async (newBoardName) => {
     try {
       addUpdate('Board', { name: newBoardName, create: true });
-      await handleUpdate();  
+      setIsCreate(true);
       await new Promise(resolve => setTimeout(resolve, 50));
       await fetchBoardsList();
     } catch (error) {

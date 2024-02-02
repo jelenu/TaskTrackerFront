@@ -10,9 +10,10 @@ export const UpdateProvider = ({ children }) => {
     List: [],
     Card: [],
   });
-
   const [hasChanges, setHasChanges] = useState(false);
-
+  const [isCreate, setIsCreate] = useState(false);
+  const { verifyToken } = useTokenVerifyRefresh();
+  const { isLogged } = useUser();
 
   const addUpdate = (type, data) => {
     setUpdateData(prevData => ({
@@ -22,9 +23,7 @@ export const UpdateProvider = ({ children }) => {
     setHasChanges(true);
   };
 
-  const { verifyToken } = useTokenVerifyRefresh();
-  const { isLogged } = useUser();
-
+  
   const handleUpdate = useCallback(async () => {
     try {
       if (isLogged) {
@@ -48,6 +47,7 @@ export const UpdateProvider = ({ children }) => {
             Card: [],
           });
           setHasChanges(false);
+          setIsCreate(false);
         } else {
             if (response.status === 401) {
                 const tokenRefreshed = await verifyToken();
@@ -64,17 +64,23 @@ export const UpdateProvider = ({ children }) => {
   }, [isLogged, updateData, verifyToken]);
 
   useEffect(() => {
-    if(hasChanges){
-      const handler = setTimeout(() => {handleUpdate();
-      }, 1000);
-      return() =>  {
-        clearTimeout(handler);
+    if (hasChanges) {
+      if (isCreate) {
+        handleUpdate();
+      } else {
+        const handler = setTimeout(() => {
+          handleUpdate();
+        }, 1000);
+  
+        return () => {
+          clearTimeout(handler);
+        };
       }
-    } 
-  }, [hasChanges, updateData, handleUpdate]);
+    }
+  }, [hasChanges, isCreate, handleUpdate]);
 
   return (
-    <UpdateContext.Provider value={{ addUpdate, handleUpdate }}>
+    <UpdateContext.Provider value={{ addUpdate, setIsCreate }}>
       {children}
     </UpdateContext.Provider>
   );

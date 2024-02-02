@@ -10,11 +10,10 @@ import { useUpdate } from '../context/UpdateContext';
 export const Board = ({board, onUpdateBoardName}) => {
   // State to manage the lists
   const [lists, setLists] = useState([]);
-  const { addUpdate, handleUpdate } = useUpdate();
-  
-  useEffect(() => {
+  const { addUpdate, setIsCreate } = useUpdate();
+  const { verifyToken } = useTokenVerifyRefresh();
+  const { isLogged } = useUser();
 
-  }, [board.id]);
 
   // Function to update the name of a list
   const updateListName = (listId, newName) => {
@@ -25,8 +24,7 @@ export const Board = ({board, onUpdateBoardName}) => {
 
   };
   
-  const { verifyToken } = useTokenVerifyRefresh();
-  const { isLogged } = useUser();
+  
 
 
   const fetchBoards = async () => {
@@ -68,15 +66,15 @@ export const Board = ({board, onUpdateBoardName}) => {
 
   const addList = async (newListName) => {
     try {
-      addUpdate('List', { name: newListName, order: 0, board_id: board.id, create: true });
-      await handleUpdate();
+      const order = lists.length;
+      addUpdate('List', { name: newListName, order: order , board_id: board.id, create: true });
+      setIsCreate(true);
       await new Promise(resolve => setTimeout(resolve, 50));
       await fetchBoards();
     }catch(error){
       console.error("Error adding board:", error);
     }
   };
-
   const handleNameChange = (e) => {
     onUpdateBoardName(e.target.value);
   };
