@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useUser } from "../context/UserContext";
 import useTokenVerifyRefresh from '../hooks/useTokenVerifyRefresh';
 import { useUpdate } from '../context/UpdateContext';
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 
 export const Board = ({board, onUpdateBoardName}) => {
@@ -75,37 +76,118 @@ export const Board = ({board, onUpdateBoardName}) => {
       console.error("Error adding board:", error);
     }
   };
-  console.log(lists)
   const handleNameChange = (e) => {
     onUpdateBoardName(e.target.value);
   };
 
-  return (
-    <div className="w-60">
-      <div>
-        <label>
-          <input
-            className="font-extrabold text-center bg-indigo-500 outline-none focus:bg-indigo-400 text-white w-full h-full p-4 "
-            type="text"
-            value={board.name}
-            onChange={handleNameChange}
-          />
-        </label>
-      </div>
-      {/* Container for lists and the "AddList" component */}
-      <div className="flex m-5">
-        {/* Checking if lists is not empty before mapping through it */}
-        {lists && lists.length > 0 && lists.map((list) => (
-          <List
-            key={list.id}
-            list={list}
-            onUpdateListName={(newName) => updateListName(list.id, newName)}
-            fetchBoards={fetchBoards}
-          />
-        ))}
 
-        {/* "AddList" component to add new lists */}
-        <AddList onAddList={addList} />
+  console.log(lists)
+
+  const handleDragAndDrop = (results) => {
+    const { source, destination, type } = results;
+
+    if (!destination) return;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    if (type === "group") {
+      const reorderedStores = [...lists];
+
+      const listSourceIndex = source.index;
+      const listDestinatonIndex = destination.index;
+
+      const [removedStore] = reorderedStores.splice(listSourceIndex, 1);
+      reorderedStores.splice(listDestinatonIndex, 0, removedStore);
+
+      return setLists(reorderedStores);
+    }
+    const itemSourceIndex = source.index;
+    const itemDestinationIndex = destination.index;
+
+    const listSourceIndex = lists.findIndex(
+      (list) => list.id === source.droppableId
+    );
+    const listDestinationIndex = lists.findIndex(
+      (list) => list.id === destination.droppableId
+    );
+
+    const newSourceItems = [...lists[listSourceIndex].cards];
+    const newDestinationItems =
+      source.droppableId !== destination.droppableId
+        ? [...lists[listDestinationIndex].cards]
+        : newSourceItems;
+
+    const [deletedItem] = newSourceItems.splice(itemSourceIndex, 1);
+    newDestinationItems.splice(itemDestinationIndex, 0, deletedItem);
+
+    const newStores = [...lists];
+
+    newStores[listSourceIndex] = {
+      ...lists[listSourceIndex],
+      cards: newSourceItems,
+    };
+    newStores[listDestinationIndex] = {
+      ...lists[listDestinationIndex],
+      cards: newDestinationItems,
+    };
+
+    setLists(newStores);
+  };
+
+
+  return (
+    <div className="layout__wrapper">
+      <div className="">
+        <DragDropContext onDragEnd={handleDragAndDrop}>
+          <div className="w-72">
+            <label>
+              <input
+                className="font-extrabold text-center bg-indigo-500 outline-none focus:bg-indigo-400 text-white w-full h-full p-4 "
+                type="text"
+                value={board.name}
+                onChange={handleNameChange}
+              />
+            </label>
+          </div>
+          <div className="flex m-5">
+            <Droppable droppableId="ROOT" type="group" direction="horizontal">
+              {(provided) => (
+                <div {...provided.droppableProps} ref={provided.innerRef} className="flex">
+                  {lists.map((list, index) => (
+                    <Draggable
+                      draggableId={list.id}
+                      index={index}
+                      key={list.id}
+                    >
+                      {(provided) => (
+                        <div
+                          {...provided.dragHandleProps}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                        >
+                          <List
+                            key={list.id}
+                            list={list}
+                            onUpdateListName={(newName) => updateListName(list.id, newName)}
+                            fetchBoards={fetchBoards}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            {/* "AddList" component to add new lists */}
+            <AddList onAddList={addList} />
+          </div>
+        </DragDropContext>
+        
       </div>
     </div>
   );
