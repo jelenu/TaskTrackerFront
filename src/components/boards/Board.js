@@ -7,15 +7,15 @@ import useTokenVerifyRefresh from '../hooks/useTokenVerifyRefresh';
 import { useUpdate } from '../context/UpdateContext';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-
 export const Board = ({board, onUpdateBoardName}) => {
   // State to manage the lists
   const [lists, setLists] = useState([]);
   const { addUpdate, setIsCreate } = useUpdate();
   const { verifyToken } = useTokenVerifyRefresh();
   const { isLogged } = useUser();
+  const [showPopup, setShowPopup] = useState(false);
 
-
+  console.log(lists)
   // Function to update the name of a list
   const updateListName = (listId, newName) => {
     const updatedList = lists.map((list) =>
@@ -24,9 +24,6 @@ export const Board = ({board, onUpdateBoardName}) => {
     addUpdate('List', {id: listId, name: newName});
 
   };
-  
-  
-
 
   const fetchBoards = async () => {
     try {
@@ -81,64 +78,102 @@ export const Board = ({board, onUpdateBoardName}) => {
   };
 
 
-  console.log(lists)
-
   const handleDragAndDrop = (results) => {
+    // Destructure properties from the 'results' object
     const { source, destination, type } = results;
+    console.log(results); // Log the drag and drop results
 
+    // If destination is falsy, do nothing
     if (!destination) return;
 
+    // If the card is dropped in the same position, do nothing
     if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
+        source.droppableId === destination.droppableId &&
+        source.index === destination.index
     )
-      return;
+        return;
 
+    // If changing the order of lists
     if (type === "group") {
-      const reorderedStores = [...lists];
+        // Create a copy of the lists
+        const reorderedLists = [...lists];
 
-      const listSourceIndex = source.index;
-      const listDestinatonIndex = destination.index;
+        // Obtain the source and destination index for lists
+        const listSourceIndex = source.index;
+        const listDestinatonIndex = destination.index;
 
-      const [removedStore] = reorderedStores.splice(listSourceIndex, 1);
-      reorderedStores.splice(listDestinatonIndex, 0, removedStore);
+        // Reorder the lists
+        const [removedList] = reorderedLists.splice(listSourceIndex, 1);
+        reorderedLists.splice(listDestinatonIndex, 0, removedList);
 
-      return setLists(reorderedStores);
+        // Save the reordered lists locally
+        setLists(reorderedLists);
+
+        // Save the reordered lists to the API
+        reorderedLists.forEach((list, index) => {
+            addUpdate('List', { id: list.id, order: index });
+        });
+
+        return;
     }
-    const itemSourceIndex = source.index;
-    const itemDestinationIndex = destination.index;
 
+    // Obtain source and destination card index
+    const cardSourceIndex = source.index;
+    const cardDestinationIndex = destination.index;
+
+    // Obtain source and destination list indices
     const listSourceIndex = lists.findIndex(
-      (list) => list.id === source.droppableId
+        (list) => list.id === source.droppableId
     );
     const listDestinationIndex = lists.findIndex(
-      (list) => list.id === destination.droppableId
+        (list) => list.id === destination.droppableId
     );
 
-    const newSourceItems = [...lists[listSourceIndex].cards];
-    const newDestinationItems =
-      source.droppableId !== destination.droppableId
-        ? [...lists[listDestinationIndex].cards]
-        : newSourceItems;
+    // Copy source and destination cards
+    const newSourceCards = [...lists[listSourceIndex].cards];
+    const newDestinationCards =
+        source.droppableId !== destination.droppableId
+            ? [...lists[listDestinationIndex].cards]
+            : newSourceCards;
 
-    const [deletedItem] = newSourceItems.splice(itemSourceIndex, 1);
-    newDestinationItems.splice(itemDestinationIndex, 0, deletedItem);
+    // Remove the card from the source and add it to the destination
+    const [deletedCard] = newSourceCards.splice(cardSourceIndex, 1);
+    newDestinationCards.splice(cardDestinationIndex, 0, deletedCard);
 
-    const newStores = [...lists];
+    // Create a copy of the lists
+    const newLists = [...lists];
 
-    newStores[listSourceIndex] = {
-      ...lists[listSourceIndex],
-      cards: newSourceItems,
+    // Update the source and destination lists with the new cards
+    newLists[listSourceIndex] = {
+        ...lists[listSourceIndex],
+        cards: newSourceCards,
     };
-    newStores[listDestinationIndex] = {
-      ...lists[listDestinationIndex],
-      cards: newDestinationItems,
+    newLists[listDestinationIndex] = {
+        ...lists[listDestinationIndex],
+        cards: newDestinationCards,
     };
+    
+    // Save reordered lists locally
+    setLists(newLists);
+    // Save reordered lists to the API
+    newLists[listSourceIndex].cards.forEach((card, index) => {
+      addUpdate('Card', { id: card.id, order: index });
+    });
 
-    setLists(newStores);
+    // If card move to other list
+    if(listSourceIndex !== listDestinationIndex){
+
+      // Save reordered destination list to the API
+      newLists[listDestinationIndex].cards.forEach((card, index) => {
+        
+        // Save moved card to the new list in the API
+        if(cardDestinationIndex === index){
+          addUpdate('Card', { id: card.id, order: index, list_id: newLists[listDestinationIndex].id });
+        }
+      });
+    } 
   };
 
-  const [showPopup, setShowPopup] = useState(false);
 
   return (
     <div className="layout__wrapper">

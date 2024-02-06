@@ -22,6 +22,7 @@ export const UpdateProvider = ({ children }) => {
     }));
     setHasChanges(true);
   };
+  console.log(updateData)
 
   
   const handleUpdate = useCallback(async () => {
