@@ -11,7 +11,7 @@ export const CardInfo = ({ card, onUpdateCardTitle, onUpdateCardDescription, onC
   };
 
   return (
-    <div className=' fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center'>
+    <div className=' fixed inset-0 bg-gray-600 bg-opacity-20 flex items-center justify-center'>
       <div className='bg-white p-6 rounded-lg relative w-1/3 z-0'>
         <div className="flex items-center justify-between mb-4">
           <label className="flex-1 -ml-3 mr-16">

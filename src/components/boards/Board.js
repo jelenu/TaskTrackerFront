@@ -138,6 +138,7 @@ export const Board = ({board, onUpdateBoardName}) => {
     setLists(newStores);
   };
 
+  const [showPopup, setShowPopup] = useState(false);
 
   return (
     <div className="layout__wrapper">
@@ -158,7 +159,8 @@ export const Board = ({board, onUpdateBoardName}) => {
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} className="flex">
                   {lists.map((list, index) => (
-                    <Draggable
+                    <Draggable 
+                      isDragDisabled={showPopup}
                       draggableId={list.id}
                       index={index}
                       key={list.id}
@@ -174,6 +176,8 @@ export const Board = ({board, onUpdateBoardName}) => {
                             list={list}
                             onUpdateListName={(newName) => updateListName(list.id, newName)}
                             fetchBoards={fetchBoards}
+                            showPopup={showPopup}
+                            setShowPopup={setShowPopup}
                           />
                         </div>
                       )}

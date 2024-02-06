@@ -5,7 +5,7 @@ import { useUpdate } from '../context/UpdateContext';
 import {Droppable, Draggable} from "react-beautiful-dnd"
 
 // List component represents a list with cards
-export const List = ({ list, onUpdateListName, fetchBoards }) => {
+export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPopup }) => {
   // State to manage the cards in the list
   const [cards, setCards] = useState(list.cards ?? []);
   const { addUpdate, setIsCreate } = useUpdate();
@@ -70,7 +70,11 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
           </div>
           <div className="cards-container">
             {list.cards.map((card, index) => (
-              <Draggable draggableId={card.id} index={index} key={card.id}>
+              <Draggable 
+                draggableId={card.id} 
+                index={index} 
+                key={card.id} 
+                isDragDisabled={showPopup}>
                 {(provided, snapshot) => (
                   <div
                     className="card-container"
@@ -84,6 +88,8 @@ export const List = ({ list, onUpdateListName, fetchBoards }) => {
                       onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
                       onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)}
                       snapshot={snapshot}
+                      showPopup={showPopup}
+                      setShowPopup={setShowPopup}
 
                     />
                   </div>
