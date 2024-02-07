@@ -31,7 +31,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-gray-200 overflow-hidden">
+    <div className="bg-gray-200">
       <Header />
 
       <UpdateProvider>

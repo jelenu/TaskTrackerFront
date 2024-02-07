@@ -53,7 +53,7 @@ export const BoardList = () => {
   useEffect(() => {
     fetchBoardsList();
     // eslint-disable-next-line
-  }, []);
+  }, [isLogged]);
 
   const handleBoardClick = (boardId) => {
     setActiveBoardId(boardId);
@@ -80,8 +80,8 @@ export const BoardList = () => {
 
   return (
     <div className="flex w-full">
-      <aside className="w-64">
-        <div className="bg-indigo-600 h-screen ">
+      <aside className="w-64 min-w-64">
+        <div className="bg-indigo-600 h-[calc(100vh-64px)] ">
           <h2 className="text-xl font-bold p-4 text-white text-center">
             Your Boards
           </h2>

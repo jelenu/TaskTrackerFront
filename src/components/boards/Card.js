@@ -9,7 +9,7 @@ export const Card = ({ card, onUpdateCardTitle, onUpdateCardDescription, snapsho
     <>
       <div 
       onClick={handleButtonClick}
-        className={` font-bold text-white hover:bg-indigo-400 mt-3 rounded-xl h-9 pl-2 flex items-center w-full ${
+        className={` font-bold text-white hover:bg-indigo-400 mt-3 rounded-xl h-9 pl-2 flex items-center w-auto ${
           snapshot.isDragging ? 'rotate-6 bg-indigo-400' : 'bg-indigo-500'
         }`}
       >

@@ -174,10 +174,9 @@ export const Board = ({board, onUpdateBoardName}) => {
     } 
   };
 
-
   return (
-    <div className="layout__wrapper">
-      <div className="">
+    <div className="overflow-x-auto w-full">
+      <div >
         <DragDropContext onDragEnd={handleDragAndDrop}>
           <div className="w-72">
             <label>
@@ -189,7 +188,7 @@ export const Board = ({board, onUpdateBoardName}) => {
               />
             </label>
           </div>
-          <div className="flex m-5">
+          <div className="flex m-5 ">
             <Droppable droppableId="ROOT" type="group" direction="horizontal">
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef} className="flex">

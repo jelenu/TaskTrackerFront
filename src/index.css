@@ -1,3 +1,28 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: none;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 10px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+}
+
+.cards-max{
+    max-height: 600px;
+}

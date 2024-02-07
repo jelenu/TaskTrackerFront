@@ -54,56 +54,59 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
 
   return (
     // Container for the list with styling
-    <div className='w-64 h-min bg-white rounded-xl p-4 m-3'>
+    <div className='w-64  bg-white rounded-xl p-4 m-3'>
       <Droppable droppableId={list.id}>
-      {(provided) => (
-        <div {...provided.droppableProps} ref={provided.innerRef}>
-          <div className="list-container">
-            <label>
-              <input
-                className="font-bold bg-transparent outline-none rounded-xl pl-2 text-indigo-600 "
-                type="text"
-                value={list.name}
-                onChange={handleNameChange}
-              />
-            </label>
-          </div>
-          <div className="cards-container">
-            {list.cards.map((card, index) => (
-              <Draggable 
-                draggableId={card.id} 
-                index={index} 
-                key={card.id} 
-                isDragDisabled={showPopup}>
-                {(provided, snapshot) => (
-                  <div
-                    className="card-container"
-                    {...provided.dragHandleProps}
-                    {...provided.draggableProps}
-                    ref={provided.innerRef}
-                  >
-                    <Card 
-                      key={index} 
-                      card={card} 
-                      onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
-                      onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)}
-                      snapshot={snapshot}
-                      showPopup={showPopup}
-                      setShowPopup={setShowPopup}
+        {(provided) => (
+          <div 
+            className=""
+            {...provided.droppableProps} 
+            ref={provided.innerRef}
+          >
+            <div>
+              <label>
+                <input
+                  className="font-bold bg-transparent outline-none rounded-xl pl-2 text-indigo-600 "
+                  type="text"
+                  value={list.name}
+                  onChange={handleNameChange}
+                />
+              </label>
+            </div>
+            <div className='overflow-auto cards-max'>
+              {list.cards.map((card, index) => (
+                <Draggable 
+                  draggableId={card.id} 
+                  index={index} 
+                  key={card.id} 
+                  isDragDisabled={showPopup}>
+                  {(provided, snapshot) => (
+                    <div
+                      {...provided.dragHandleProps}
+                      {...provided.draggableProps}
+                      ref={provided.innerRef}
+                    >
+                      <Card 
+                        key={index} 
+                        card={card} 
+                        onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
+                        onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)}
+                        snapshot={snapshot}
+                        showPopup={showPopup}
+                        setShowPopup={setShowPopup}
 
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+            
+            {/* "AddCard" component for adding new cards to the list */}
+            <AddCard onAddCard={addCard} />
           </div>
-          {/* "AddCard" component for adding new cards to the list */}
-      <AddCard onAddCard={addCard} />
-        </div>
-      )}
-    </Droppable>
-
+        )}
+      </Droppable>
     </div>
   );
 };

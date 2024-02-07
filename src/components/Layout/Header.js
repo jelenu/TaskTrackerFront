@@ -5,7 +5,7 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
   const { isLogged } = useUser();
   return (
-    <header className="bg-indigo-600 font-bold text-white p-4 flex justify-around items-center">
+    <header className="bg-indigo-600 font-bold h-16 text-white p-4 flex justify-around items-center">
       <div className="flex items-center">
         <img
           className="h-9 w-auto mr-2"
