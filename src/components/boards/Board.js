@@ -15,7 +15,6 @@ export const Board = ({board, onUpdateBoardName}) => {
   const { isLogged } = useUser();
   const [showPopup, setShowPopup] = useState(false);
 
-  console.log(lists)
   // Function to update the name of a list
   const updateListName = (listId, newName) => {
     const updatedList = lists.map((list) =>
@@ -81,7 +80,6 @@ export const Board = ({board, onUpdateBoardName}) => {
   const handleDragAndDrop = (results) => {
     // Destructure properties from the 'results' object
     const { source, destination, type } = results;
-    console.log(results); // Log the drag and drop results
 
     // If destination is falsy, do nothing
     if (!destination) return;

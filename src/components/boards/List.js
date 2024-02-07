@@ -43,6 +43,7 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
   const updateCardDescription = (cardId, newDescription) => {
     const updatedCards = cards.map((card) =>
       card.id === cardId ? { ...card, description: newDescription } : card);
+    
     setCards(updatedCards);
     addUpdate('Card', { id:cardId, description: newDescription });
 
@@ -79,7 +80,8 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
                   draggableId={card.id} 
                   index={index} 
                   key={card.id} 
-                  isDragDisabled={showPopup}>
+                  isDragDisabled={showPopup}
+                >
                   {(provided, snapshot) => (
                     <div
                       {...provided.dragHandleProps}
@@ -88,14 +90,14 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
                     >
                       <Card 
                         key={index} 
-                        card={card} 
                         onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
                         onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)}
+                        card={cards[index]}
                         snapshot={snapshot}
                         showPopup={showPopup}
                         setShowPopup={setShowPopup}
-
                       />
+
                     </div>
                   )}
                 </Draggable>

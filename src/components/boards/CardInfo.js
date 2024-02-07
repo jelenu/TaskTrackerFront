@@ -2,7 +2,7 @@ import React from 'react';
 import { XMarkIcon } from "@heroicons/react/20/solid";
  
 export const CardInfo = ({ card, onUpdateCardTitle, onUpdateCardDescription, onClose }) => {
-
+  console.log(card)
   const handleTitleChange = (e) => {
     onUpdateCardTitle(e.target.value);
   };
@@ -34,11 +34,7 @@ export const CardInfo = ({ card, onUpdateCardTitle, onUpdateCardDescription, onC
               value={card.description}
               onChange={handleDescriptionChange}
             />
-            <p className='mb-2 font-semibold text-indigo-600'>Comentarios</p>
-            <textarea
-              className="outline-none border-2 rounded-xl pl-2 text-indigo-600 hover:bg-gray-200   resize-none w-full h-20 mb-10" 
-              placeholder="Provisional"
-            />
+            
           </div>
           <div className="text-indigo-600">
             <p>Miembros</p>
