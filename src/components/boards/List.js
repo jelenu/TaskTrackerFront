@@ -13,7 +13,8 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
   // Function to add a new card to the list
   const addCard = async (newCardTitle) => {
     try{
-    addUpdate('Card', { title: newCardTitle, order: 0, list_id: list.id, create: true });
+    const order = cards.length;
+    addUpdate('Card', { title: newCardTitle, order: order, list_id: list.id, create: true });
     setIsCreate(true);
     await new Promise(resolve => setTimeout(resolve, 50));
     await fetchBoards();
