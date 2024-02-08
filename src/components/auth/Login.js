@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useUser } from '../context/UserContext';
 
-export const Login = ({ onToggleForm, closePopup }) => {
+export const Login = ({ onToggleForm, closePopup, setIsEditing }) => {
   const { login } = useUser();
 
   const [formData, setFormData] = useState({
@@ -44,7 +44,7 @@ export const Login = ({ onToggleForm, closePopup }) => {
       login();
   
       closePopup();
-  
+      setIsEditing && setIsEditing(false);
     } catch (error) {
       console.error('Error al realizar la solicitud:', error);
     }
@@ -53,9 +53,9 @@ export const Login = ({ onToggleForm, closePopup }) => {
 
   return (
     <div>
-      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
+      <div className="fixed inset-0 bg-gray-500 flex items-center justify-center">
         <div className="bg-white p-8 w-full max-w-md rounded-lg relative">
-          <button onClick={closePopup} className="absolute top-0 right-0 p-4">
+          <button  onClick={() => { closePopup(); setIsEditing && setIsEditing(false) }} className="absolute top-0 right-0 p-4">
             <XMarkIcon className="h-6 w-6 text-black" />
           </button>
 

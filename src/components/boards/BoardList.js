@@ -41,8 +41,6 @@ export const BoardList = () => {
       } else {
         setBoards([
           { id: 1, name: "Elemento 1" },
-          { id: 2, name: "Elemento 2" },
-          { id: 3, name: "Elemento 3" },
         ]);
       }
     } catch (error) {

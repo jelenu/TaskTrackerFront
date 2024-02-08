@@ -63,11 +63,14 @@ export const Board = ({board, onUpdateBoardName}) => {
 
   const addList = async (newListName) => {
     try {
-      const order = lists.length;
-      addUpdate('List', { name: newListName, order: order , board_id: board.id, create: true });
-      setIsCreate(true);
-      await new Promise(resolve => setTimeout(resolve, 50));
-      await fetchBoards();
+      if(isLogged){
+        const order = lists.length;
+        addUpdate('List', { name: newListName, order: order , board_id: board.id, create: true });
+        setIsCreate(true);
+        await new Promise(resolve => setTimeout(resolve, 50));
+        await fetchBoards();
+      }
+
     }catch(error){
       console.error("Error adding board:", error);
     }

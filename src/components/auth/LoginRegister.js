@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Login } from './Login';
 import { Register } from './Register';
 
-export const LoginRegister = () => {
+export const LoginRegister = ({ openPopup, setIsEditing }) => {
   const [isLoginActive, setIsLoginActive] = useState(true);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(openPopup);
 
   const handleToggleForm = () => {
     setIsLoginActive(!isLoginActive);
@@ -19,9 +19,9 @@ export const LoginRegister = () => {
       {isPopupOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
           {isLoginActive ? (
-            <Login onToggleForm={handleToggleForm} closePopup={handleTogglePopup} />
+            <Login onToggleForm={handleToggleForm} closePopup={handleTogglePopup} setIsEditing={setIsEditing} />
           ) : (
-            <Register onToggleForm={handleToggleForm}  closePopup={handleTogglePopup} />
+            <Register onToggleForm={handleToggleForm}  closePopup={handleTogglePopup} setIsEditing={setIsEditing}/>
           )}
         </div>
       )}
