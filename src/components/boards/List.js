@@ -92,7 +92,8 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
                         key={index} 
                         onUpdateCardTitle={(newTitle) => updateCardTitle(card.id, newTitle)} 
                         onUpdateCardDescription={(newDescription) => updateCardDescription(card.id, newDescription)}
-                        card={cards[index]}
+                        card={card}
+                        cardCopy={cards[index]}
                         snapshot={snapshot}
                         showPopup={showPopup}
                         setShowPopup={setShowPopup}

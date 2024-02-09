@@ -16,10 +16,15 @@ export const UpdateProvider = ({ children }) => {
   const { isLogged } = useUser();
 
   const addUpdate = (type, data) => {
-    setUpdateData(prevData => ({
-      ...prevData,
-      [type]: [...prevData[type], data],
-    }));
+    setUpdateData(prevData => {
+      // Filtrar las actualizaciones existentes para eliminar la anterior con el mismo ID
+      const filteredUpdates = prevData[type].filter(update => update.id !== data.id);
+  
+      return {
+        ...prevData,
+        [type]: [...filteredUpdates, data],
+      };
+    });
     setHasChanges(true);
   };
   console.log(updateData)
