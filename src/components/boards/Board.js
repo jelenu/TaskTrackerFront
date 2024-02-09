@@ -6,6 +6,7 @@ import { useUser } from "../context/UserContext";
 import useTokenVerifyRefresh from '../hooks/useTokenVerifyRefresh';
 import { useUpdate } from '../context/UpdateContext';
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from 'uuid';
 
 export const Board = ({board, onUpdateBoardName}) => {
   // State to manage the lists
@@ -20,7 +21,9 @@ export const Board = ({board, onUpdateBoardName}) => {
     const updatedList = lists.map((list) =>
       list.id === listId ? { ...list, name: newName } : list);
     setLists(updatedList);
-    addUpdate('List', {id: listId, name: newName});
+    if(isLogged){
+      addUpdate('List', {id: listId, name: newName});
+    }
 
   };
 
@@ -69,6 +72,11 @@ export const Board = ({board, onUpdateBoardName}) => {
         setIsCreate(true);
         await new Promise(resolve => setTimeout(resolve, 50));
         await fetchBoards();
+      }else{
+        const order = lists.length;
+        const newList = { id: uuidv4(), name: newListName, order:order, cards: [] };
+        // Actualizar el estado de lists con la nueva lista
+        setLists(prevLists => [...prevLists, newList]);
       }
 
     }catch(error){
@@ -111,9 +119,12 @@ export const Board = ({board, onUpdateBoardName}) => {
         setLists(reorderedLists);
 
         // Save the reordered lists to the API
-        reorderedLists.forEach((list, index) => {
+        if(isLogged){
+          reorderedLists.forEach((list, index) => {
             addUpdate('List', { id: list.id, order: index });
-        });
+          });
+        }
+        
 
         return;
     }
@@ -157,21 +168,25 @@ export const Board = ({board, onUpdateBoardName}) => {
     // Save reordered lists locally
     setLists(newLists);
     // Save reordered lists to the API
-    newLists[listSourceIndex].cards.forEach((card, index) => {
-      addUpdate('Card', { id: card.id, order: index });
-    });
-
+    if(isLogged){
+      newLists[listSourceIndex].cards.forEach((card, index) => {
+        addUpdate('Card', { id: card.id, order: index });
+      });
+    }
+    
     // If card move to other list
     if(listSourceIndex !== listDestinationIndex){
 
       // Save reordered destination list to the API
-      newLists[listDestinationIndex].cards.forEach((card, index) => {
+      if(isLogged){
+        newLists[listDestinationIndex].cards.forEach((card, index) => {
         
-        // Save moved card to the new list in the API
-        if(cardDestinationIndex === index){
-          addUpdate('Card', { id: card.id, order: index, list_id: newLists[listDestinationIndex].id });
-        }
-      });
+          // Save moved card to the new list in the API
+          if(cardDestinationIndex === index){
+            addUpdate('Card', { id: card.id, order: index, list_id: newLists[listDestinationIndex].id });
+          }
+        });
+      }    
     } 
   };
 
@@ -213,6 +228,7 @@ export const Board = ({board, onUpdateBoardName}) => {
                             fetchBoards={fetchBoards}
                             showPopup={showPopup}
                             setShowPopup={setShowPopup}
+                            setLists={setLists}
                           />
                         </div>
                       )}

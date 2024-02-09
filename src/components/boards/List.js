@@ -3,26 +3,48 @@ import { Card } from './Card';
 import { AddCard } from './AddCard';
 import { useUpdate } from '../context/UpdateContext';
 import {Droppable, Draggable} from "react-beautiful-dnd"
+import { useUser } from "../context/UserContext";
+import { v4 as uuidv4 } from 'uuid';
 
 // List component represents a list with cards
-export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPopup }) => {
+export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPopup, setLists }) => {
   // State to manage the cards in the list
   const [cards, setCards] = useState(list.cards ?? []);
   const { addUpdate, setIsCreate } = useUpdate();
+  const { isLogged } = useUser();
 
   // Function to add a new card to the list
   const addCard = async (newCardTitle) => {
-    try{
-    const order = cards.length;
-    addUpdate('Card', { title: newCardTitle, order: order, list_id: list.id, create: true });
-    setIsCreate(true);
-    await new Promise(resolve => setTimeout(resolve, 50));
-    await fetchBoards();
-
-    }catch(error){
+    try {
+      if (isLogged) {
+        const order = cards.length;
+        addUpdate('Card', { title: newCardTitle, order: order, list_id: list.id, create: true });
+        setIsCreate(true);
+        await new Promise(resolve => setTimeout(resolve, 50));
+        await fetchBoards();
+      } else {
+        const order = cards.length;
+        const newCard = { id: uuidv4(), title: newCardTitle, order: order, list_id: list.id };
+  
+        // Actualizar el estado de lists con la nueva tarjeta
+        setLists(prevLists => {
+          const updatedLists = prevLists.map(prevList => {
+            if (prevList.id === list.id) {
+              return {
+                ...prevList,
+                cards: [...prevList.cards, newCard]
+              };
+            }
+            return prevList;
+          });
+          return updatedLists;
+        });
+      }
+    } catch (error) {
       console.error("Error adding board:", error);
     }
   };
+  
   useEffect(() => {
     // Update local state 'cards' when 'list' prop changes
     setCards(list.cards ?? []);
@@ -35,8 +57,9 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
     const updatedCards = cards.map((card) =>
       card.id === cardId ? { ...card, title: newTitle } : card);
     setCards(updatedCards);
-    addUpdate('Card', { id:cardId, title: newTitle });
-
+    if(isLogged){
+      addUpdate('Card', { id:cardId, title: newTitle });
+    }
   };
 
   // Function to update the description of a card in the list
@@ -45,8 +68,9 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
       card.id === cardId ? { ...card, description: newDescription } : card);
     
     setCards(updatedCards);
-    addUpdate('Card', { id:cardId, description: newDescription });
-
+    if(isLogged){
+      addUpdate('Card', { id:cardId, description: newDescription });
+    }
   };
 
   // Handler for updating the name of the list
@@ -75,7 +99,7 @@ export const List = ({ list, onUpdateListName, fetchBoards, showPopup, setShowPo
               </label>
             </div>
             <div className='overflow-auto cards-max'>
-              {list.cards.map((card, index) => (
+              {list.cards && list.cards.map((card, index) => (
                 <Draggable 
                   draggableId={card.id} 
                   index={index} 

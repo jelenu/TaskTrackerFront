@@ -40,7 +40,7 @@ export const BoardList = () => {
         }
       } else {
         setBoards([
-          { id: 1, name: "Elemento 1" },
+          { id: 1, name: "Board" },
         ]);
       }
     } catch (error) {
@@ -72,7 +72,9 @@ export const BoardList = () => {
     const updatedBoard = boards.map((board) =>
       board.id === boardId ? { ...board, name: newName } : board);
     setBoards(updatedBoard)
-    addUpdate('Board', {id: boardId, name: newName });
+    if(isLogged){
+      addUpdate('Board', {id: boardId, name: newName });
+    }
 
   };
 
