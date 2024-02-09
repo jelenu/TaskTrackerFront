@@ -1,6 +1,7 @@
-import React from 'react';
-import { LoginRegister } from '../auth/LoginRegister';
-import { useUser } from '../context/UserContext';
+import React from "react";
+import { LoginRegister } from "../auth/LoginRegister";
+import { useUser } from "../context/UserContext";
+import { Logout } from "../auth/Logout";
 
 const Header = () => {
   const { isLogged } = useUser();
@@ -14,16 +15,9 @@ const Header = () => {
         />
       </div>
 
-      <nav className="flex space-x-4">
-      </nav>
+      <nav className="flex space-x-4"></nav>
 
-      <div>
-        {isLogged ? (
-          <div>Bienvenido</div>
-        ) : (
-          <LoginRegister />
-        )}
-      </div>
+      <div>{isLogged ? <Logout/> : <LoginRegister />}</div>
     </header>
   );
 };
