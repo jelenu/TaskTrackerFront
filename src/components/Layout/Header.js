@@ -3,6 +3,7 @@ import { LoginRegister } from "../auth/LoginRegister";
 import { useUser } from "../context/UserContext";
 import { Logout } from "../auth/Logout";
 
+
 const Header = () => {
   const { isLogged } = useUser();
   return (

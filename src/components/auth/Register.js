@@ -97,28 +97,28 @@ export const Register = ({ onToggleForm, closePopup, setIsEditing }) => {
   return (
     <div>
       <div className="fixed inset-0 bg-gray-500 flex items-center justify-center">
-        <div className="bg-white p-8 w-full max-w-md rounded-lg relative">
-          <button onClick={() => { closePopup(); setIsEditing && setIsEditing(false) }} className="absolute top-0 right-0 p-4">
+        <div className="bg-white p-4 sm:p-8 w-full max-w-md rounded-lg relative">
+          <button onClick={() => { closePopup(); setIsEditing && setIsEditing(false) }} className="absolute top-0 right-0 p-2 sm:p-4">
             <XMarkIcon className="h-6 w-6 text-black" />
           </button>
 
-          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="flex min-h-full flex-1 flex-col justify-center px-4 sm:px-6 py-6 sm:py-12">
+            <div className="mx-auto w-32 sm:w-full">
               <img
                 className="mx-auto h-10 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
+                alt="Tu Empresa"
               />
             </div>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-6 sm:mt-10 mx-4 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="username"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Username
+                    Nombre de usuario
                   </label>
                   <div className="mt-2">
                     <input
@@ -138,7 +138,7 @@ export const Register = ({ onToggleForm, closePopup, setIsEditing }) => {
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Email address
+                    Dirección de correo electrónico
                   </label>
                   <div className="mt-2">
                     <input
@@ -159,7 +159,7 @@ export const Register = ({ onToggleForm, closePopup, setIsEditing }) => {
                     htmlFor="password"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Password
+                    Contraseña
                   </label>
                   <div className="mt-2">
                     <input
@@ -180,7 +180,7 @@ export const Register = ({ onToggleForm, closePopup, setIsEditing }) => {
                     htmlFor="password_confirm"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Confirm Password
+                    Confirmar Contraseña
                   </label>
                   <div className="mt-2">
                     <input
@@ -201,20 +201,20 @@ export const Register = ({ onToggleForm, closePopup, setIsEditing }) => {
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Register
+                    Registrarse
                   </button>
                 </div>
               </form>
 
-              <p className="mt-10 text-center text-sm text-gray-500">
-                Already have an account?{" "}
-                <button
-                  onClick={() => onToggleForm()}
-                  className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                >
-                  Log in
-                </button>
-              </p>
+              <p className="mt-4 sm:mt-6 text-center text-sm text-gray-500">
+                    ¿Ya tienes una cuenta?{" "}
+                    <button
+                      onClick={() => onToggleForm()}
+                      className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                    >
+                      Iniciar sesión
+                    </button>
+                  </p>
             </div>
           </div>
         </div>

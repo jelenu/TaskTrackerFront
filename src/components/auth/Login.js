@@ -54,28 +54,28 @@ export const Login = ({ onToggleForm, closePopup, setIsEditing }) => {
   return (
     <div>
       <div className="fixed inset-0 bg-gray-500 flex items-center justify-center">
-        <div className="bg-white p-8 w-full max-w-md rounded-lg relative">
-          <button  onClick={() => { closePopup(); setIsEditing && setIsEditing(false) }} className="absolute top-0 right-0 p-4">
+        <div className="bg-white p-4 sm:p-8 w-full max-w-md rounded-lg relative">
+          <button onClick={() => { closePopup(); setIsEditing && setIsEditing(false) }} className="absolute top-0 right-0 p-2 sm:p-4">
             <XMarkIcon className="h-6 w-6 text-black" />
           </button>
 
-          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="flex min-h-full flex-1 flex-col justify-center px-4 sm:px-6 py-6 sm:py-12">
+            <div className="mx-auto w-32 sm:w-full">
               <img
                 className="mx-auto h-10 w-auto"
                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
+                alt=""
               />
             </div>
 
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-6 sm:mt-10 mx-4 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Email address
+                    Dirección de correo electrónico
                   </label>
                   <div className="mt-2">
                     <input
@@ -86,7 +86,7 @@ export const Login = ({ onToggleForm, closePopup, setIsEditing }) => {
                       onChange={handleChange}
                       autoComplete="email"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 pl-2  ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 pl-2 ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
@@ -97,14 +97,14 @@ export const Login = ({ onToggleForm, closePopup, setIsEditing }) => {
                       htmlFor="password"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Password
+                      Contraseña
                     </label>
                     <div className="text-sm">
                       <a
                         href="/"
                         className="font-semibold text-indigo-600 hover:text-indigo-500"
                       >
-                        Forgot password?
+                        ¿Olvidaste tu contraseña?
                       </a>
                     </div>
                   </div>
@@ -127,18 +127,18 @@ export const Login = ({ onToggleForm, closePopup, setIsEditing }) => {
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Log in
+                    Iniciar sesión
                   </button>
                 </div>
               </form>
 
-              <p className="mt-10 text-center text-sm text-gray-500">
-                Not a member?{" "}
+              <p className="mt-4 sm:mt-6 text-center text-sm text-gray-500">
+                ¿No eres miembro?{" "}
                 <button
                   onClick={() => onToggleForm()}
                   className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                 >
-                  Create an account
+                  Crea una cuenta
                 </button>
               </p>
             </div>

@@ -32,13 +32,10 @@ function App() {
 
   return (
     <div className="bg-gray-200">
-      <Header />
-
-      <UpdateProvider>
-        <BoardList/>
-      </UpdateProvider>
-
-      
+        <Header />
+        <UpdateProvider>
+          <BoardList/>
+        </UpdateProvider>
     </div>
   );
 }
