@@ -4,6 +4,7 @@ TaskTrackerFrontend
 ## Description
 
 An in-depth paragraph about your project and overview of use.
+![firstDescription](public/descripcion1.png)
 
 ## Getting Started
 
@@ -26,10 +27,3 @@ code blocks for commands
 ```
 
 ```
-
-## Authors
-
-Contributors names and contact info
-
-Jesús Léon Núñez
-ex. [@DomPizzie](https://twitter.com/dompizzie)
