@@ -4,7 +4,7 @@ TaskTrackerFrontend
 ## Description
 
 An in-depth paragraph about your project and overview of use.
-![firstDescription](public/descripcion1.png)
+![firstDescription](public/descripcion.png)
 
 ## Getting Started
 
